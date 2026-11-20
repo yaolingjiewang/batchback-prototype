@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BatchBack | Local prototype</title>
+<style>
+:root{font-family:Inter,Arial,sans-serif;color:#22352b;background:#f5f3eb;font-synthesis:none}*{box-sizing:border-box}body{margin:0}header{background:#173d30;color:white}.top{max-width:1120px;margin:auto;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px}.brand{font-weight:800;font-size:25px;letter-spacing:-1px}.brand span{color:#d4e4a9}.tag{font-size:13px;color:#d6e3d6}main{max-width:1120px;margin:auto;padding:30px 24px 70px}.demo{background:#e7edd7;color:#304934;border:1px solid #cbdab7;border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.5}.hero{display:flex;justify-content:space-between;gap:20px;align-items:end;margin:30px 0 20px}h1{font-family:Georgia,serif;font-weight:normal;font-size:clamp(34px,5vw,52px);letter-spacing:-1.4px;margin:0 0 8px}h2,h3,p{margin-top:0}.sub{color:#5a6b5f;line-height:1.5;margin:0}.tabs{display:flex;gap:6px;border-bottom:1px solid #d4dcd1;margin:24px 0}.tab{border:0;background:none;padding:14px 18px;color:#53695b;font-weight:700;cursor:pointer;border-bottom:3px solid transparent}.tab.active{color:#194b35;border-color:#194b35}.grid{display:grid;grid-template-columns:1.35fr .85fr;gap:22px;align-items:start}.card{background:white;border:1px solid #dde4da;border-radius:16px;box-shadow:0 5px 22px #294b3510;overflow:hidden}.cardbody{padding:24px}.banner{height:150px;background:linear-gradient(115deg,#bfcc91,#e8d6a8);display:flex;align-items:end;padding:22px 24px;color:#2b4632}.banner strong{font-family:Georgia,serif;font-weight:normal;font-size:31px}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:1.3px;font-weight:800;color:#6e7c69;margin-bottom:8px}.price{font-size:24px;font-weight:800;color:#1f543a}.meta{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.pill{background:#f1f5e9;border-radius:8px;padding:8px 10px;font-size:13px;color:#3d5a44}.hint{color:#627267;font-size:13px;line-height:1.55}.action{border:0;border-radius:9px;background:#1d533a;color:white;padding:13px 18px;font-weight:700;cursor:pointer}.action:hover{background:#123e2a}.action:disabled{opacity:.45;cursor:not-allowed}.secondary{background:#eef3e9;color:#1d533a}.small{font-size:12px;color:#687970}.line{border:0;border-top:1px solid #e5ebe2;margin:20px 0}.label{font-size:13px;font-weight:700;display:block;margin:13px 0 7px}input,select{font:inherit;width:100%;border:1px solid #bdcbbd;border-radius:8px;padding:11px;color:#203a2a}input:focus{outline:2px solid #91ae87}input[type=checkbox]{width:auto;margin-right:8px}.records{margin:12px 0}.record{border-top:1px solid #e5ebe2;padding:10px 0;line-height:1.5}.formgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.status{padding:14px;background:#f1f5e9;border-radius:10px;line-height:1.5}.number{font-size:32px;font-weight:800;color:#1d533a}.order{border-top:1px solid #e5ebe2;padding:14px 0;display:flex;justify-content:space-between;gap:10px;align-items:center}.code{font-size:21px;font-weight:800;letter-spacing:2px}.error{color:#a13025;font-size:13px}.hidden{display:none}.footer{margin-top:30px;color:#687970;font-size:12px}.split{display:flex;justify-content:space-between;gap:15px;align-items:center}@media(max-width:700px){.grid{grid-template-columns:1fr}.top{padding:18px}.tag{display:none}main{padding:22px 16px 55px}.cardbody{padding:20px}.formgrid{gap:8px}.tab{padding:13px 11px}}
+</style></head>
+<body><header><div class="top"><div class="brand">batch<span>back</span></div><div class="tag">Good food, a second chance.</div></div></header>
+<main><div class="demo"><strong>Interactive prototype · simulated data.</strong> No real food, payment, booking or account is involved. Use one browser tab; data is not shared between users or devices.</div><div class="hero"><div><h1>Good food, closer to home.</h1><p class="sub">Discover surplus bakes near campus, then collect on your way.</p></div></div>
+<nav class="tabs" aria-label="Choose view"><button class="tab active" id="customerTab">Find food</button><button class="tab" id="bakeryTab">Bakery workspace</button></nav>
+<section id="customer"><div class="grid"><article class="card"><div class="banner"><strong>End-of-day bakes</strong></div><div class="cardbody"><div class="eyebrow">Example bakery · near campus</div><h2>Campus Corner Bakery</h2><p class="sub">Example bag: two plain croissants from the same day's production.</p><div class="meta"><span class="pill">Pickup 5:00–6:00 pm</span><span class="pill" id="available"></span><span class="pill">S$6.00 / bag</span></div><p class="hint"><strong>Allergens:</strong> Contains wheat, milk and egg; may contain soy and nuts. Ask the bakery about cross-contact before reserving.</p><label class="label" for="collectionDate">Example collection date</label><input id="collectionDate" type="date"><p class="small">For a quick demo, open Bakery workspace and choose “Set up simulated pickup day” first.</p><p class="small" id="availabilityNotice" aria-live="polite"></p><button class="action" id="reserve">Reserve a bag</button><p class="small">Demo reservation only · no payment is taken. Collect by 6:00 pm on the selected date.</p><p class="error" id="reserveError" aria-live="polite"></p></div></article><aside class="card"><div class="cardbody"><div class="eyebrow">Your collection</div><h2>My reservations</h2><p class="hint">Show the collection code at the bakery during the pickup window.</p><div id="customerOrders"></div></div></aside></div></section>
+<section id="bakery" class="hidden">
+  <div class="grid">
+    <article class="card"><div class="cardbody">
+      <div class="eyebrow">Bakery workspace</div>
+      <h2>Daily stock log</h2>
+      <p class="hint">Record individual plain croissants for each day. One example bag contains two croissants. Data stays in this browser.</p>
+      <p class="small" id="legacyNote"></p>
+      <p class="hint">To try the full flow, load simulated history and pickup stock, review the baseline, then switch to Find food to reserve and return here to confirm.</p>
+      <button class="action secondary" id="loadExamples">Load simulated history</button>
+      <p class="small" id="exampleMessage" aria-live="polite">Example records are labelled and do not replace existing dates.</p>
+      <button class="action secondary" id="loadPickupStock">Set up simulated pickup day</button>
+      <p class="small" id="pickupSetupMessage" aria-live="polite">Creates an example stock record for the planning date without replacing any existing record. It also sets that date in the customer view.</p>
+      <label class="label" for="recordDate">Date</label><input id="recordDate" type="date">
+      <div class="formgrid">
+        <div><label class="label" for="made">Made</label><input id="made" type="number" min="0" step="1" placeholder="0"></div>
+        <div><label class="label" for="fullPrice">Full-price sold</label><input id="fullPrice" type="number" min="0" step="1" placeholder="0"></div>
+        <div><label class="label" for="discount">Discount sold</label><input id="discount" type="number" min="0" step="1" placeholder="0"></div>
+        <div><label class="label" for="donated">Donated</label><input id="donated" type="number" min="0" step="1" placeholder="0"></div>
+        <div><label class="label" for="discarded">Discarded</label><input id="discarded" type="number" min="0" step="1" placeholder="0"></div>
+        <div><label class="label" for="remaining">Still in stock</label><input id="remaining" type="number" min="0" step="1" placeholder="0"></div>
+      </div>
+      <label class="label" for="minutes">Staff time in minutes</label><input id="minutes" type="number" min="0" step="1" placeholder="0">
+      <p><label class="hint"><input id="special" type="checkbox">Special day (holiday, weather or event)</label></p>
+      <p class="small">All quantities refer to units of the same product. Sales, donations, discards and remaining stock must add up to the amount made.</p>
+      <button class="action" id="saveRecord">Save daily record</button>
+      <p class="error" id="stockError" aria-live="polite"></p><p class="error" id="recordError" aria-live="polite"></p><div class="records" id="records"></div>
+      <hr class="line"><h3>Batch planning</h3>
+      <label class="label" for="planDate">Date to plan</label><input id="planDate" type="date">
+      <p class="hint">Uses the average of full-price and discount sales from earlier records on the same weekday. Special days are excluded. Sales can underestimate demand if stock ran out.</p>
+      <button class="action secondary" id="calculate">Calculate baseline</button>
+      <p class="error" id="planError" aria-live="polite"></p><div class="status" id="suggestion" aria-live="polite">Select a date and calculate a baseline.</div>
+      <label class="label" for="override">Manager's chosen quantity</label><input id="override" type="number" min="0" step="1" placeholder="Enter whole units">
+      <label class="label" for="overrideReason">Reason for adjustment</label><input id="overrideReason" type="text" maxlength="120" placeholder="For example, a local event">
+      <p><button class="action secondary" id="savePlan">Save manager decision</button></p><p class="error" id="decisionError" aria-live="polite"></p><div class="small" id="decision" aria-live="polite"></div>
+      <hr class="line"><h3>Listing availability</h3><p class="hint">Set available bags for the planning date above. Each bag contains two plain croissants. Existing reservations remain in place. On pickup, the selected daily record moves two remaining units to discounted sales.</p><p class="small" id="availabilityMigrationNotice" aria-live="polite"></p><label class="label" for="listing">Available bags for planning date</label><input id="listing" type="number" min="0" step="1"><p><button class="action secondary" id="updateStock">Update availability</button></p><p class="error" id="listingError" aria-live="polite"></p>
+    </div></article>
+    <aside class="card"><div class="cardbody"><div class="eyebrow">Pickup desk</div><h2>Reservations</h2><p class="hint">For a new reservation, save a croissant stock record for its collection date with at least two remaining units. Confirming pickup updates that record once.</p><p class="error" id="pickupError" aria-live="polite"></p><div id="bakeryOrders"></div></div></aside>
+  </div>
+</section>
+<div class="footer"><button class="action secondary" id="reset">Reset example data</button><p class="error" id="resetError" aria-live="polite"></p><p>Prototype for the BatchBack digital business plan. Figures, bakery and listings are illustrative.</p></div></main>
+<script>
+const key = 'batchback-prototype-v1';
+let data;
+try { data = JSON.parse(localStorage.getItem(key)); } catch { data = null; }
+if (!data || !Array.isArray(data.orders) || !Number.isInteger(data.available) || data.available < 0) {
+  data = { available: 4, orders: [] };
+}
+if (!Array.isArray(data.records)) data.records = [];
+if (!Array.isArray(data.plans)) data.plans = [];
+// Preserve existing reservations and the previously configured available count.
+// Each previously recorded date starts with the old remaining listing amount;
+// dates created after migration start with the four-bag example limit.
+if (!data.availableByDate || typeof data.availableByDate !== 'object' || Array.isArray(data.availableByDate)) {
+  data.availableByDate = {};
+  data.legacyAvailabilityDates = [];
+  for (const record of data.records) {
+    if (record && typeof record.date === 'string') {
+      data.availableByDate[record.date] = data.available;
+      data.legacyAvailabilityDates.push(record.date);
+    }
+  }
+}
+if (!Array.isArray(data.legacyAvailabilityDates)) data.legacyAvailabilityDates = [];
+const byId = id => document.getElementById(id);
+function availableForDate(date) {
+  const value = data.availableByDate[date];
+  return Number.isSafeInteger(value) && value >= 0 ? value : 4;
+}
+function commit(next, errorId) {
+  try { localStorage.setItem(key, JSON.stringify(next)); } catch {
+    byId(errorId).textContent = 'The change could not be saved. Please try again.';
+    return false;
+  }
+  data = next;
+  return true;
+}
+function validDate(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const date = new Date(value + 'T12:00:00');
+  return !Number.isNaN(date.getTime()) && date.getFullYear() === Number(value.slice(0, 4)) && date.getMonth() + 1 === Number(value.slice(5, 7)) && date.getDate() === Number(value.slice(8, 10));
+}
+function whole(value) { return value !== '' && Number.isSafeInteger(Number(value)) && Number(value) >= 0; }
+function render() {
+  const chosenDate = byId('collectionDate').value;
+  const chosenRecord = data.records.find(record => record.date === chosenDate && record.product === 'plain_croissant');
+  const pendingForDate = data.orders.filter(order => !order.collected && order.unitsPerBag === 2 && order.collectionDate === chosenDate).length;
+  const stockBags = chosenRecord && Number.isInteger(chosenRecord.remaining) ? Math.max(0, Math.floor(chosenRecord.remaining / 2) - pendingForDate) : 0;
+  const dateAvailability = validDate(chosenDate) ? availableForDate(chosenDate) : 0;
+  byId('available').textContent = validDate(chosenDate) ? Math.min(dateAvailability, stockBags) + ' bags available for this date' : 'Choose a date for availability';
+  byId('availabilityNotice').textContent = data.legacyAvailabilityDates.includes(chosenDate) ? 'Earlier data used one shared availability count. In Bakery workspace, check and update the available bags for this date.' : '';
+  byId('availabilityNotice').hidden = !byId('availabilityNotice').textContent;
+  byId('reserve').disabled = validDate(chosenDate) && dateAvailability === 0;
+  const listingDate = byId('planDate').value;
+  byId('listing').value = validDate(listingDate) ? availableForDate(listingDate) : '';
+  byId('listing').disabled = !validDate(listingDate);
+  byId('updateStock').disabled = !validDate(listingDate);
+  byId('availabilityMigrationNotice').textContent = data.legacyAvailabilityDates.includes(listingDate) ? 'This older date used a shared count. Check and update its available bags.' : (!validDate(listingDate) && data.legacyAvailabilityDates.length ? 'Earlier data used a shared count. Select a date and check its available bags.' : '');
+  byId('availabilityMigrationNotice').hidden = !byId('availabilityMigrationNotice').textContent;
+  const orders = data.orders;
+  byId('legacyNote').textContent = data.records.some(r => r.product !== 'plain_croissant') ? 'Earlier records are kept as product unspecified. They are excluded from the croissant baseline and cannot be used for new pickups.' : '';
+  byId('customerOrders').innerHTML = orders.length ? orders.map(o => `<div class="order"><div><div class="code">${o.code}</div><div class="small">Campus Corner Bakery · 5:00–6:00 pm<br>${o.unitsPerBag === 2 && validDate(o.collectionDate) ? 'Two plain croissants · ' + o.collectionDate : 'Earlier reservation · contents unspecified'}<br>${o.collected ? 'Collected' : 'Ready for collection'}</div></div><div><strong>S$6.00</strong>${o.collected ? '' : `<br><button class="action secondary" data-cancel="${o.code}">Cancel reservation</button>`}</div></div>`).join('') : '<p class="hint">No reservations yet.</p>';
+  byId('bakeryOrders').innerHTML = orders.length ? orders.map(o => `<div class="order"><div><div class="code">${o.code}</div><div class="small">${o.unitsPerBag === 2 && validDate(o.collectionDate) ? 'Two plain croissants · ' + o.collectionDate : 'Earlier reservation · stock log unchanged'}<br>${o.collected ? 'Collected' : 'Awaiting pickup'}</div></div>${o.collected ? '' : `<button class="action secondary" data-code="${o.code}">${o.unitsPerBag === 2 && validDate(o.collectionDate) ? 'Confirm pickup' : 'Confirm earlier pickup'}</button>`}</div>`).join('') : '<p class="hint">No reservations yet.</p>';
+  byId('records').innerHTML = data.records.length ? data.records.slice().sort((a,b) => b.date.localeCompare(a.date)).map(r => `<div class="record"><strong>${r.date}</strong>${r.product === 'plain_croissant' ? ' · Plain croissants' : ' · Earlier record, product unspecified'}${r.example ? ' · Simulated example' : ''}${r.special ? ' · Special day' : ''}<br>${r.made} made · ${r.fullPrice} full price · ${r.discount} discount · ${r.donated} donated · ${r.discarded} discarded · ${r.remaining} remaining · ${r.minutes} min<br><button class="action secondary" data-record="${r.date}">Remove record</button></div>`).join('') : '<p class="hint">No daily records yet. Add records to calculate a baseline.</p>';
+}
+byId('customerTab').onclick = () => { byId('customer').classList.remove('hidden'); byId('bakery').classList.add('hidden'); byId('customerTab').classList.add('active'); byId('bakeryTab').classList.remove('active'); };
+byId('bakeryTab').onclick = () => { byId('bakery').classList.remove('hidden'); byId('customer').classList.add('hidden'); byId('bakeryTab').classList.add('active'); byId('customerTab').classList.remove('active'); };
+byId('collectionDate').onchange = () => { byId('reserveError').textContent = ''; render(); };
+byId('reserve').onclick = () => {
+  const collectionDate = byId('collectionDate').value;
+  if (!validDate(collectionDate)) { byId('reserveError').textContent = 'Choose a valid example collection date.'; return; }
+  if (availableForDate(collectionDate) <= 0) { byId('reserveError').textContent = 'No bags are available for the selected date.'; return; }
+  const record = data.records.find(r => r.date === collectionDate);
+  if (!record || record.product !== 'plain_croissant') { byId('reserveError').textContent = 'No plain-croissant stock record for this date. In Bakery workspace, set up a simulated pickup day or save a record first.'; return; }
+  const pending = data.orders.filter(o => !o.collected && o.unitsPerBag === 2 && o.collectionDate === collectionDate).length;
+  if (!Number.isInteger(record.remaining) || record.remaining < (pending + 1) * 2) {
+    byId('reserveError').textContent = 'The selected date has fewer than two unreserved croissants.';
+    return;
+  }
+  let n = 1001; while (data.orders.some(o => o.code === 'BB' + n)) n++;
+  const updated = { ...data, availableByDate: { ...data.availableByDate, [collectionDate]: availableForDate(collectionDate) - 1 }, orders: [...data.orders, { code: 'BB' + n, collected: false, unitsPerBag: 2, collectionDate }] };
+  try { localStorage.setItem(key, JSON.stringify(updated)); } catch { byId('reserveError').textContent = 'The reservation could not be saved. Please try again.'; return; }
+  data = updated; byId('reserveError').textContent = ''; render();
+};
+byId('customerOrders').onclick = e => {
+  const order = data.orders.find(o => o.code === e.target.dataset.cancel);
+  if (!order || order.collected) return;
+  const updated = validDate(order.collectionDate) && order.unitsPerBag === 2
+    ? { ...data, availableByDate: { ...data.availableByDate, [order.collectionDate]: availableForDate(order.collectionDate) + 1 }, orders: data.orders.filter(o => o !== order) }
+    : { ...data, available: data.available + 1, orders: data.orders.filter(o => o !== order) };
+  try { localStorage.setItem(key, JSON.stringify(updated)); } catch { byId('reserveError').textContent = 'The cancellation could not be saved. Please try again.'; return; }
+  data = updated; byId('reserveError').textContent = ''; render();
+};
+byId('bakeryOrders').onclick = e => {
+  const order = data.orders.find(o => o.code === e.target.dataset.code);
+  if (!order || order.collected) return;
+  let recordDate = '';
+  if (order.unitsPerBag === 2 && validDate(order.collectionDate)) {
+    recordDate = order.collectionDate;
+    const record = data.records.find(r => r.date === recordDate);
+    if (!validDate(recordDate) || !record || record.product !== 'plain_croissant') {
+      byId('pickupError').textContent = `Save a croissant stock record for ${recordDate} before confirming this pickup.`;
+      return;
+    }
+    if (!Number.isInteger(record.remaining) || !Number.isInteger(record.discount) || record.remaining < 2) {
+      byId('pickupError').textContent = 'The selected record needs at least two remaining croissants.';
+      return;
+    }
+  }
+  const updated = {
+    ...data,
+    orders: data.orders.map(o => o === order ? { ...o, collected: true, ...(recordDate ? { recordDate } : {}) } : o),
+    records: data.records.map(r => r.date === recordDate ? { ...r, remaining: r.remaining - 2, discount: r.discount + 2 } : r)
+  };
+  try { localStorage.setItem(key, JSON.stringify(updated)); } catch {
+    byId('pickupError').textContent = 'The pickup could not be saved. Please try again.';
+    return;
+  }
+  data = updated;
+  byId('pickupError').textContent = recordDate ? `Pickup confirmed for ${recordDate}; two croissants moved from remaining stock to discounted sales.` : 'Earlier pickup confirmed. Its unspecified contents did not change the stock log.';
+  if (recordDate) byId('suggestion').textContent = 'Records changed. Calculate the baseline again.';
+  render();
+};
+byId('records').onclick = e => {
+  const date = e.target.dataset.record;
+  if (!date) return;
+  if (data.orders.some(o => o.recordDate === date || (!o.collected && o.unitsPerBag === 2 && o.collectionDate === date))) {
+    byId('recordError').textContent = 'This record is linked to a reservation or confirmed pickup and cannot be removed.';
+    return;
+  }
+  byId('recordError').textContent = '';
+  const availableByDate = { ...data.availableByDate };
+  delete availableByDate[date];
+  if (!commit({ ...data, availableByDate, legacyAvailabilityDates: data.legacyAvailabilityDates.filter(d => d !== date), records: data.records.filter(r => r.date !== date) }, 'recordError')) return;
+  byId('suggestion').textContent = 'Records changed. Calculate the baseline again.'; render();
+};
+byId('saveRecord').onclick = () => {
+  const date = byId('recordDate').value;
+  const fields = ['made', 'fullPrice', 'discount', 'donated', 'discarded', 'remaining', 'minutes'];
+  const values = fields.map(id => byId(id).value);
+  if (!validDate(date) || values.some(v => !whole(v))) { byId('stockError').textContent = 'Choose a valid date and enter a whole number of zero or more in every field.'; return; }
+  if (data.records.some(r => r.date === date)) { byId('stockError').textContent = 'A record already exists for this date. Remove it first to replace it.'; return; }
+  const [made, fullPrice, discount, donated, discarded, remaining, minutes] = values.map(Number);
+  if (fullPrice + discount + donated + discarded + remaining !== made) { byId('stockError').textContent = 'Sales, donations, discards and remaining stock must add up to the amount made.'; return; }
+  const record = { date, product: 'plain_croissant', made, fullPrice, discount, donated, discarded, remaining, minutes, special: byId('special').checked };
+  if (!commit({ ...data, records: [...data.records, record] }, 'stockError')) return;
+  byId('stockError').textContent = ''; byId('suggestion').textContent = 'Records changed. Calculate the baseline again.'; render();
+};
+byId('calculate').onclick = () => {
+  const target = byId('planDate').value;
+  if (!validDate(target)) { byId('planError').textContent = 'Choose a valid date to plan.'; byId('suggestion').textContent = 'Select a date and calculate a baseline.'; return; }
+  const weekday = new Date(target + 'T12:00:00').getDay();
+  const matches = data.records.filter(r => r.product === 'plain_croissant' && r.date < target && !r.special && new Date(r.date + 'T12:00:00').getDay() === weekday);
+  byId('planError').textContent = '';
+  if (!matches.length) { byId('suggestion').textContent = 'No earlier ordinary-day records for this weekday. Add a record or choose a different date.'; return; }
+  const total = matches.reduce((sum, r) => sum + r.fullPrice + r.discount, 0);
+  const average = total / matches.length;
+  const sampleWarning = matches.length < 3 ? ' Small sample: treat this baseline cautiously.' : '';
+  byId('suggestion').textContent = `Baseline: ${average.toFixed(1)} units, from ${matches.length} matching record${matches.length === 1 ? '' : 's'} (${total} units sold in total).${sampleWarning} Check events and possible stockouts before choosing a whole-unit quantity.`;
+};
+byId('loadExamples').onclick = () => {
+  const target = validDate(byId('planDate').value) ? byId('planDate').value : '2026-11-26';
+  const exampleValues = [
+    { made: 30, fullPrice: 19, discount: 3, donated: 2, discarded: 4, remaining: 2, minutes: 5 },
+    { made: 32, fullPrice: 22, discount: 3, donated: 2, discarded: 3, remaining: 2, minutes: 6 },
+    { made: 28, fullPrice: 18, discount: 4, donated: 1, discarded: 3, remaining: 2, minutes: 4 }
+  ];
+  let added = 0;
+  const exampleRecords = [];
+  for (let index = 0; index < exampleValues.length; index++) {
+    const date = new Date(target + 'T12:00:00');
+    date.setDate(date.getDate() - 7 * (index + 1));
+    const day = `${String(date.getFullYear()).padStart(4, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    if (!validDate(day)) {
+      byId('exampleMessage').textContent = 'Choose a planning date with at least three earlier weeks.';
+      return;
+    }
+    exampleRecords.push({ date: day, product: 'plain_croissant', ...exampleValues[index], special: false, example: true });
+  }
+  const additions = exampleRecords.filter(record => !data.records.some(existing => existing.date === record.date));
+  added = additions.length;
+  if (!commit({ ...data, records: [...data.records, ...additions] }, 'exampleMessage')) return;
+  byId('planDate').value = target;
+  byId('exampleMessage').textContent = `${added} simulated example record${added === 1 ? '' : 's'} added. Existing dates were kept. The baseline includes matching ordinary-day croissant records only.`;
+  render();
+  byId('calculate').onclick();
+  showPlan();
+  byId('loadPickupStock').onclick();
+};
+byId('loadPickupStock').onclick = () => {
+  const date = validDate(byId('planDate').value) ? byId('planDate').value : '2026-11-26';
+  const existing = data.records.find(record => record.date === date);
+  if (!existing) {
+    const record = { date, product: 'plain_croissant', made: 10, fullPrice: 2, discount: 0, donated: 0, discarded: 0, remaining: 8, minutes: 3, special: false, example: true };
+    if (!commit({ ...data, records: [...data.records, record] }, 'pickupSetupMessage')) return;
+    render();
+  }
+  byId('planDate').value = date;
+  byId('collectionDate').value = date;
+  byId('pickupSetupMessage').textContent = existing ? `Existing record for ${date} was kept. ${existing.product === 'plain_croissant' ? 'Check its remaining units before reserving.' : 'Its product is unspecified, so choose another date or remove it before creating croissant stock.'}` : `Simulated stock for ${date} is ready: 8 croissants remain. The customer date is set.`;
+  render();
+};
+function showPlan() {
+  const plan = data.plans.find(p => p.date === byId('planDate').value);
+  byId('decision').textContent = plan ? `Saved for ${plan.date}: ${plan.quantity} units. ${plan.product === 'plain_croissant' ? 'Plain croissants.' : 'Earlier decision; product unspecified.'} Reason: ${plan.reason}` : '';
+}
+byId('planDate').onchange = () => { byId('suggestion').textContent = 'Date changed. Calculate the baseline again.'; byId('planError').textContent = ''; byId('listingError').textContent = ''; showPlan(); render(); };
+byId('savePlan').onclick = () => {
+  const date = byId('planDate').value, value = byId('override').value, reason = byId('overrideReason').value.trim();
+  if (!validDate(date) || !whole(value) || !reason) { byId('decisionError').textContent = 'Choose a planning date, enter a whole quantity and provide a reason.'; return; }
+  const plans = data.plans.filter(p => p.date !== date);
+  plans.push({ date, product: 'plain_croissant', quantity: Number(value), reason });
+  if (!commit({ ...data, plans }, 'decisionError')) return;
+  byId('decisionError').textContent = ''; showPlan();
+};
+byId('updateStock').onclick = () => { const date = byId('planDate').value, value = byId('listing').value; if (!validDate(date)) { byId('listingError').textContent = 'Choose a planning date before updating availability.'; return; } if (!whole(value)) { byId('listingError').textContent = 'Enter a whole number of zero or more.'; return; } if (!commit({ ...data, availableByDate: { ...data.availableByDate, [date]: Number(value) }, legacyAvailabilityDates: data.legacyAvailabilityDates.filter(d => d !== date) }, 'listingError')) return; byId('listingError').textContent = ''; render(); };
+byId('reset').onclick = () => { if (!commit({ available: 4, availableByDate: {}, legacyAvailabilityDates: [], orders: [], records: [], plans: [] }, 'resetError')) return; ['recordDate', 'made', 'fullPrice', 'discount', 'donated', 'discarded', 'remaining', 'minutes', 'planDate', 'override', 'overrideReason', 'collectionDate'].forEach(id => { byId(id).value = ''; }); byId('special').checked = false; byId('resetError').textContent = ''; byId('exampleMessage').textContent = 'Example records are labelled and do not replace existing dates.'; byId('pickupSetupMessage').textContent = 'Creates an example stock record for the planning date without replacing any existing record. It also sets that date in the customer view.'; byId('suggestion').textContent = 'Select a date and calculate a baseline.'; byId('decision').textContent = ''; byId('stockError').textContent = ''; byId('recordError').textContent = ''; byId('pickupError').textContent = ''; byId('reserveError').textContent = ''; byId('planError').textContent = ''; byId('decisionError').textContent = ''; byId('listingError').textContent = ''; render(); };
+render();
+</script></body></html>
